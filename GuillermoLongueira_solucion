@@ -1,0 +1,59 @@
+interface Entrenador {
+  nombre: string;
+  reputacion: number;
+  plazas: number;
+}
+
+interface Cliente {
+  nombre: string;
+  importancia: number;
+}
+
+// Definición de los entrenadores y clientes
+const entrenadores: Entrenador[] = [
+  { nombre: 'A', reputacion:  4.5, plazas:  1 },
+  { nombre: 'B', reputacion:  3.2, plazas:  4 },
+  { nombre: 'C', reputacion:  1.2, plazas:  3 },
+  { nombre: 'D', reputacion:  3.4, plazas:  2 },
+];
+
+const clientes: Cliente[] = [
+  { nombre: 'q', importancia:  2.6 },
+  { nombre: 'r', importancia:  3.7 },
+  { nombre: 's', importancia:  8.5 },
+  { nombre: 't', importancia:  9.7 },
+  { nombre: 'u', importancia:  2.6 },
+  { nombre: 'v', importancia:  4.7 },
+  { nombre: 'w', importancia:  5.6 },
+  { nombre: 'x', importancia:  3.7 },
+  { nombre: 'y', importancia:  8.1 },
+  { nombre: 'z', importancia:  2.5 },
+];
+
+// Función para asignar clientes a entrenadores
+function asignarClientes(entrenadores: Entrenador[], clientes: Cliente[]): Entrenador[] {
+  // Inicializar la asignación
+  const asignacion: Entrenador[] = entrenadores.map(entrenador => ({
+    ...entrenador,
+    clientes: [],
+  }));
+
+  // Asignar clientes a entrenadores basándose en la importancia de la reputación
+  clientes.forEach(cliente => {
+    // Encontrar el entrenador con la mejor coincidencia de reputación
+    const mejorEntrenador = asignacion.reduce((mejor, entrenador) => {
+      const diferenciaReputacion = Math.abs(entrenador.reputacion - cliente.importancia);
+      const diferenciaMejor = Math.abs(mejor.reputacion - cliente.importancia);
+      return diferenciaReputacion < diferenciaMejor ? entrenador : mejor;
+    }, { reputacion: Infinity });
+
+    // Asignar el cliente al entrenador con la mejor coincidencia
+    mejorEntrenador.clientes.push(cliente.nombre);
+  });
+
+  return asignacion;
+}
+
+// Ejecutar la asignación y mostrar el resultado
+const resultado = asignarClientes(entrenadores, clientes);
+console.log(resultado);
